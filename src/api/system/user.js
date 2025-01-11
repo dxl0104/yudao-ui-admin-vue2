@@ -25,6 +25,21 @@ export function getUser(userId) {
     method: 'get'
   })
 }
+//查询当前用户的cookie
+export function getCurrentCookie() {
+  return request({
+    url: '/system/user/getCurrentCookie',
+    method: 'get'
+  })
+}
+
+export function setCurrentCookie(cookie) {
+  return request({
+    url: '/system/user/setCurrentCookie',
+    method: 'post',
+    data: cookie
+  })
+}
 
 // 新增用户
 export function addUser(data) {
