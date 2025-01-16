@@ -69,6 +69,7 @@
 <script>
 import * as BasicDataApi from '@/api/wuyou/basicdata';
 import BasicDataForm from './BasicDataForm.vue';
+import {importId} from "@/api/wuyou/basicdata";
 
 export default {
   name: "BasicData",
@@ -135,6 +136,11 @@ export default {
         try {
           this.importLoading = true;
           console.log(this.selectedRows);
+          const ids = this.selectedRows.map(item => item.id);
+          console.log(ids)
+          importId({idList:ids}).then((res)=>{
+            console.log(res)
+          })
         } catch {
           console.log("取消")
         } finally {
