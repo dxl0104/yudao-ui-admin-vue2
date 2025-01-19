@@ -50,4 +50,12 @@ export function exportBasicDataExcel(params) {
     params,
     responseType: 'blob'
   })
-}
+}
+
+export function importId(data) {
+  return request({
+    url: '/wuyou/basic-data/importId',
+    method: 'post',
+    data: data
+  })
+}

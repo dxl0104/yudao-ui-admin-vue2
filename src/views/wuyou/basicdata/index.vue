@@ -28,8 +28,8 @@
                    v-hasPermi="['wuyou:basic-data:create']">新增</el-button>
       </el-col>
       <el-col :span="1.5">
-        <el-button type="warning" plain icon="el-icon-download" size="mini" @click="handleExport" :loading="exportLoading"
-                   v-hasPermi="['wuyou:basic-data:export']">导出</el-button>
+        <el-button type="warning" plain icon="el-icon-download" size="mini" @click="handleExport" :loading="exportLoading">导出</el-button>
+        <el-button type="primary" plain icon="el-icon-download" size="mini" @click="importErp" :loading="importLoading">导入无忧erp</el-button>
       </el-col>
       <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
     </el-row>
@@ -69,6 +69,7 @@
 <script>
 import * as BasicDataApi from '@/api/wuyou/basicdata';
 import BasicDataForm from './BasicDataForm.vue';
+import {importId} from "@/api/wuyou/basicdata";
 
 export default {
   name: "BasicData",
@@ -81,6 +82,7 @@ export default {
       loading: true,
       // 导出遮罩层
       exportLoading: false,
+      importLoading:false,
       // 显示搜索条件
       showSearch: true,
       // 总条数
@@ -126,6 +128,29 @@ export default {
     handleQuery() {
       this.queryParams.pageNo = 1;
       this.getList();
+    },
+    async importErp(){
+      debugger
+      if (this.selectedRows.length > 0) {
+        await this.$modal.confirm('是否将选中的数据导入无忧erp?');
+        try {
+          this.importLoading = true;
+          console.log(this.selectedRows);
+          const ids = this.selectedRows.map(item => item.id);
+          console.log(ids)
+          importId({idList:ids}).then((res)=>{
+            console.log(res)
+          })
+        } catch {
+          console.log("取消")
+        } finally {
+          this.importLoading = false;
+        }
+      }
+      else {
+        this.$message.info("请选择需要导入的数据");
+      }
+
     },
     /** 重置按钮操作 */
     resetQuery() {

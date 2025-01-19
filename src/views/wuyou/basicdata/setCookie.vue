@@ -2,11 +2,19 @@
 <div>
   <!-- 对话框(添加 / 修改) -->
     <el-form ref="formRef" :model="formData"  label-width="100px">
-      <el-form-item label="cookie" prop="cookie">
-        <el-input v-model="formData.cookie"  placeholder="请输入cookie" />
+      <el-form-item label="用户名" prop="userName">
+        <el-input v-model="formData.userName"  placeholder="请输入用户名" />
       </el-form-item>
+
+      <el-form-item label="密码" prop="pwd">
+        <el-input v-model="formData.pwd"  placeholder="请输入密码" />
+      </el-form-item>
+
+      <el-form-item label="cookie" prop="cookie">
+        <el-input disabled v-model="formData.cookie"  placeholder="请输入cookie" />
+      </el-form-item>
+      <el-button type="primary" @click="login">获取cookie</el-button>
       <el-button type="primary" @click="submitForm">确 定</el-button>
-      <el-button type="primary" @click="submitForm">授权</el-button>
     </el-form>
 </div>
 </template>
@@ -20,7 +28,9 @@ import {getCurrentCookie, setCurrentCookie} from "@/api/system/user";
    data(){
      return {
        formData: {
-         cookie:""
+         cookie:"",
+         userName:undefined,
+         pwd:undefined
        },
      }
    },
@@ -39,7 +49,7 @@ import {getCurrentCookie, setCurrentCookie} from "@/api/system/user";
        })
 
      },
-     getToken(){
+     login(){
 
      },
      getCookie(){
