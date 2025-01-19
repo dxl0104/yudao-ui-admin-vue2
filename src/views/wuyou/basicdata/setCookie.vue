@@ -6,6 +6,7 @@
         <el-input v-model="formData.cookie"  placeholder="请输入cookie" />
       </el-form-item>
       <el-button type="primary" @click="submitForm">确 定</el-button>
+      <el-button type="primary" @click="submitForm">授权</el-button>
     </el-form>
 </div>
 </template>
@@ -36,6 +37,9 @@ import {getCurrentCookie, setCurrentCookie} from "@/api/system/user";
          this.$message.success("修改成功");
          this.getCookie();
        })
+
+     },
+     getToken(){
 
      },
      getCookie(){
