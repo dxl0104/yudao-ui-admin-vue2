@@ -85,7 +85,8 @@ export const DICT_TYPE = {
   // ========== WUYOU  模块 ==========
   TASK_STATUS:'task_status',  //任务状态
   TASK_TYPE:'task_type',  //任务类别
-  DEVICE_STATUS:'device_status'  //采集器状态
+  DEVICE_STATUS:'device_status',  //采集器状态
+  TASK_PAGE_STATUS:'task_page_status' //采集分页状态
 }
 
 /**
