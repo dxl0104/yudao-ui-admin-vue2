@@ -24,6 +24,17 @@
         <el-date-picker v-model="queryParams.createTime" style="width: 240px" value-format="yyyy-MM-dd HH:mm:ss" type="daterange"
                         range-separator="-" start-placeholder="开始日期" end-placeholder="结束日期" :default-time="['00:00:00', '23:59:59']" />
       </el-form-item>
+      <el-form-item label="优先级" prop="priority">
+        <el-input v-model="queryParams.priority" placeholder="请输入优先级" clearable @keyup.enter.native="handleQuery"/>
+      </el-form-item>
+      <el-form-item label="开始时间" prop="startTime">
+        <el-date-picker v-model="queryParams.startTime" style="width: 240px" value-format="yyyy-MM-dd HH:mm:ss" type="daterange"
+                        range-separator="-" start-placeholder="开始日期" end-placeholder="结束日期" :default-time="['00:00:00', '23:59:59']" />
+      </el-form-item>
+      <el-form-item label="结束时间" prop="endTime">
+        <el-date-picker v-model="queryParams.endTime" style="width: 240px" value-format="yyyy-MM-dd HH:mm:ss" type="daterange"
+                        range-separator="-" start-placeholder="开始日期" end-placeholder="结束日期" :default-time="['00:00:00', '23:59:59']" />
+      </el-form-item>
       <el-form-item>
         <el-button type="primary" icon="el-icon-search" @click="handleQuery">搜索</el-button>
         <el-button icon="el-icon-refresh" @click="resetQuery">重置</el-button>
@@ -61,9 +72,21 @@
         </template>
       </el-table-column>
       <el-table-column label="页数" align="center" prop="pages" />
+      <el-table-column label="url" align="center" prop="url" />
       <el-table-column label="创建时间" align="center" prop="createTime" width="180">
         <template v-slot="scope">
           <span>{{ parseTime(scope.row.createTime) }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column label="优先级" align="center" prop="priority" />
+      <el-table-column label="开始时间" align="center" prop="startTime" width="180">
+        <template v-slot="scope">
+          <span>{{ parseTime(scope.row.startTime) }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column label="结束时间" align="center" prop="endTime" width="180">
+        <template v-slot="scope">
+          <span>{{ parseTime(scope.row.endTime) }}</span>
         </template>
       </el-table-column>
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
@@ -118,6 +141,10 @@ export default {
         timeoutAt: null,
         pages: null,
         createTime: [],
+        priority: null,
+        startTime: [],
+        endTime: [],
+        url:null
       },
             };
   },
