@@ -3,15 +3,26 @@
     <!-- 对话框(添加 / 修改) -->
     <el-dialog :title="dialogTitle" :visible.sync="dialogVisible" width="45%" v-dialogDrag append-to-body>
       <el-form ref="formRef" :model="formData" :rules="formRules" v-loading="formLoading" label-width="100px">
-                    <el-form-item label="ip地址" prop="ipAddress">
-                      <el-input v-model="formData.ipAddress" placeholder="请输入ip地址" />
+                    <el-form-item label="任务id" prop="taskId">
+                      <el-input v-model="formData.taskId" placeholder="请输入任务id" />
+                    </el-form-item>
+                    <el-form-item label="设备id" prop="deviceId">
+                      <el-input v-model="formData.deviceId" placeholder="请输入设备id" />
+                    </el-form-item>
+                    <el-form-item label="进度" prop="process">
+                      <el-input v-model="formData.process" placeholder="请输入进度" />
+                    </el-form-item>
+                    <el-form-item label="已采集数量" prop="collectCount">
+                      <el-input v-model="formData.collectCount" placeholder="请输入已采集数量" />
+                    </el-form-item>
+                    <el-form-item label="总数量" prop="totalCount">
+                      <el-input v-model="formData.totalCount" placeholder="请输入总数量" />
                     </el-form-item>
                     <el-form-item label="状态" prop="status">
-                      <el-radio-group v-model="formData.status">
-                            <el-radio v-for="dict in this.getDictDatas(DICT_TYPE.DEVICE_STATUS)"
-                                      :key="dict.value" :label="parseInt(dict.value)"
->{{dict.label}}</el-radio>
-                      </el-radio-group>
+                      <el-select v-model="formData.status" placeholder="请选择状态">
+                            <el-option v-for="dict in this.getDictDatas(DICT_TYPE.TASK_PROCESS_STATUS)"
+                                       :key="dict.value" :label="dict.label" :value="parseInt(dict.value)" />
+                      </el-select>
                     </el-form-item>
       </el-form>
               <div slot="footer" class="dialog-footer">
@@ -23,9 +34,9 @@
 </template>
 
 <script>
-  import * as DeviceApi from '@/api/wuyou/device';
+  import * as TaskProcessApi from '@/api/wuyou/taskprocess';
       export default {
-    name: "DeviceForm",
+    name: "TaskProcessForm",
     components: {
                     },
     data() {
@@ -39,9 +50,12 @@
         // 表单参数
         formData: {
                             id: undefined,
-                            ipAddress: undefined,
+                            taskId: undefined,
+                            deviceId: undefined,
+                            process: undefined,
+                            collectCount: undefined,
+                            totalCount: undefined,
                             status: undefined,
-                            captchaTime: undefined,
         },
         // 表单校验
         formRules: {
@@ -57,18 +71,16 @@
         if (id) {
           this.formLoading = true;
           try {
-            const res = await DeviceApi.getDevice(id);
+            const res = await TaskProcessApi.getTaskProcess(id);
             this.formData = res.data;
-            this.title = "修改采集器信息";
+            this.title = "修改任务进度";
           } finally {
             this.formLoading = false;
           }
         }
-        this.title = "新增采集器信息";
+        this.title = "新增任务进度";
               },
       /** 提交按钮 */
-
-
       async submitForm() {
         // 校验主表
         await this.$refs["formRef"].validate();
@@ -77,14 +89,14 @@
           const data = this.formData;
                   // 修改的提交
           if (data.id) {
-            await DeviceApi.updateDevice(data);
+            await TaskProcessApi.updateTaskProcess(data);
             this.$modal.msgSuccess("修改成功");
             this.dialogVisible = false;
             this.$emit('success');
             return;
           }
           // 添加的提交
-          await DeviceApi.createDevice(data);
+          await TaskProcessApi.createTaskProcess(data);
           this.$modal.msgSuccess("新增成功");
           this.dialogVisible = false;
           this.$emit('success');
@@ -96,9 +108,12 @@
       reset() {
         this.formData = {
                             id: undefined,
-                            ipAddress: undefined,
+                            taskId: undefined,
+                            deviceId: undefined,
+                            process: undefined,
+                            collectCount: undefined,
+                            totalCount: undefined,
                             status: undefined,
-                            captchaTime: undefined,
         };
         this.resetForm("formRef");
       }
