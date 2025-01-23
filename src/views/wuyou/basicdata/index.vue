@@ -47,6 +47,7 @@
         </template>
       </el-table-column>
       <el-table-column label="url" align="center" prop="url" />
+      <el-table-column label="数据地址" align="center" prop="dataJson" />
       <el-table-column label="快递费" align="center" prop="delivery" />
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
         <template v-slot="scope">
