@@ -43,11 +43,11 @@ export function getBasicDataPage(params) {
   })
 }
 // 导出无忧基础数据 Excel
-export function exportBasicDataExcel(params) {
+export function exportBasicDataExcel(data) {
   return request({
     url: '/wuyou/basic-data/export-excel',
-    method: 'get',
-    params,
+    method: 'post',
+    data: data,
     responseType: 'blob'
   })
 }

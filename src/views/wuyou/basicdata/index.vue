@@ -12,8 +12,17 @@
       <el-form-item label="快递费" prop="delivery">
         <el-input v-model="queryParams.delivery" placeholder="请输入快递费" clearable @keyup.enter.native="handleQuery"/>
       </el-form-item>
-      <el-form-item label="分类" prop="category">
-        <el-input v-model="queryParams.category" placeholder="请输入分类" clearable @keyup.enter.native="handleQuery"/>
+      <el-form-item label="productId" prop="productId">
+        <el-input v-model="queryParams.productId" placeholder="请输入productId" clearable @keyup.enter.native="handleQuery"/>
+      </el-form-item>
+      <el-form-item label="一级分类" prop="mainCategory1">
+        <el-input v-model="queryParams.mainCategory1" placeholder="请输入分类" clearable @keyup.enter.native="handleQuery"/>
+      </el-form-item>
+      <el-form-item label="二级分类" prop="mainCategory2">
+        <el-input v-model="queryParams.mainCategory2" placeholder="请输入分类" clearable @keyup.enter.native="handleQuery"/>
+      </el-form-item>
+      <el-form-item label="三级分类" prop="mainCategory3">
+        <el-input v-model="queryParams.mainCategory3" placeholder="请输入分类" clearable @keyup.enter.native="handleQuery"/>
       </el-form-item>
       <el-form-item>
         <el-button type="primary" icon="el-icon-search" @click="handleQuery">搜索</el-button>
@@ -60,6 +69,7 @@
       <el-table-column label="分类二" align="center" prop="mainCategory2" />
       <el-table-column label="分类三" align="center" prop="mainCategory3" />
       <el-table-column label="数据地址" align="center" prop="dataJson" />
+      <el-table-column label="productId" align="center" prop="productId" />
       <el-table-column label="快递费" align="center" prop="delivery" />
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
         <template v-slot="scope">
@@ -117,6 +127,11 @@ export default {
         dataJson: null,
         delivery: null,
         category: null,
+        ids:[],
+        mainCategory1:null,
+        mainCategory2:null,
+        mainCategory3:null,
+        productId:null,
       },
       // 选中的行（多选）
       selectedRows: [],
@@ -186,14 +201,21 @@ export default {
     },
     /** 导出按钮操作 */
     async handleExport() {
-      await this.$modal.confirm('是否确认导出所有无忧基础数据数据项?');
-      try {
-        this.exportLoading = true;
-        const data = await BasicDataApi.exportBasicDataExcel(this.queryParams);
-        this.$download.excel(data, '无忧基础数据.xls');
-      } catch {} finally {
-        this.exportLoading = false;
+      if (this.selectedRows.length>0){
+        await this.$modal.confirm('是否确认导出所有无忧基础数据数据项?');
+        try {
+          this.exportLoading = true;
+          this.queryParams.ids = this.selectedRows.map((item) => item.id);
+          const data = await BasicDataApi.exportBasicDataExcel(this.queryParams);
+          this.$download.excel(data, '无忧基础数据.xls');
+        } catch {} finally {
+          this.exportLoading = false;
+        }
       }
+      else {
+        this.$message.info("请选择需要导出的数据");
+      }
+
     },
     /** 处理选择的行 */
     handleSelectionChange(selectedRows) {
