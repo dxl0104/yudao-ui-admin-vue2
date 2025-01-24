@@ -29,7 +29,7 @@
       </el-col>
       <el-col :span="1.5">
         <el-button type="warning" plain icon="el-icon-download" size="mini" @click="handleExport" :loading="exportLoading">导出</el-button>
-        <el-button type="primary" plain icon="el-icon-download" size="mini" @click="importErp" :loading="importLoading">导入无忧erp</el-button>
+<!--        <el-button type="primary" plain icon="el-icon-download" size="mini" @click="importErp" :loading="importLoading">导入无忧erp</el-button>-->
       </el-col>
       <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
     </el-row>
@@ -41,12 +41,24 @@
 
       <!-- 其他表格列 -->
       <el-table-column label="id" align="center" prop="id" />
+      <el-table-column label="商品主图" align="center">
+        <template v-slot="scope">
+          <a :href="scope.row.url" target="_blank">
+            <img :src="scope.row.mainUrl" v-if="scope.row.mainUrl" alt="商品主图" width="50" height="50" />
+          </a>
+        </template>
+      </el-table-column>
+      <el-table-column label="商品标题" align="center" prop="title" />
       <el-table-column label="创建时间" align="center" prop="createTime" width="180">
         <template v-slot="scope">
           <span>{{ parseTime(scope.row.createTime) }}</span>
         </template>
       </el-table-column>
       <el-table-column label="url" align="center" prop="url" />
+      <el-table-column label="价格" align="center" prop="price" />
+      <el-table-column label="分类一" align="center" prop="mainCategory1" />
+      <el-table-column label="分类二" align="center" prop="mainCategory2" />
+      <el-table-column label="分类三" align="center" prop="mainCategory3" />
       <el-table-column label="数据地址" align="center" prop="dataJson" />
       <el-table-column label="快递费" align="center" prop="delivery" />
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
