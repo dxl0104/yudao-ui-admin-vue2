@@ -44,41 +44,36 @@
     </el-row>
 
     <!-- 表格 -->
-    <el-table v-loading="loading" :data="list" :stripe="true" :show-overflow-tooltip="true" @selection-change="handleSelectionChange">
+    <el-table v-loading="loading" :data="list" :stripe="true" :show-overflow-tooltip="true" style="table-layout: fixed;" @selection-change="handleSelectionChange">
       <!-- 添加选择框，使用自定义class -->
       <el-table-column type="selection" width="55"  />
 
       <!-- 其他表格列 -->
-      <el-table-column label="id" align="center" prop="id" />
+      <el-table-column label="id" align="center" prop="id" width="100px"/>
       <el-table-column label="商品主图" align="center">
         <template v-slot="scope">
-          <a :href="scope.row.url" target="_blank">
-            <img :src="scope.row.mainUrl" v-if="scope.row.mainUrl" alt="商品主图" width="50" height="50" />
-          </a>
+          <el-image
+            style="width: 100px; height: 60px"
+            :src="scope.row.mainUrl"
+            :preview-src-list="[scope.row.mainUrl]">
+          </el-image>
         </template>
       </el-table-column>
-      <el-table-column label="商品标题" align="center" prop="title" />
-      <el-table-column label="创建时间" align="center" prop="createTime" width="180">
+      <el-table-column label="商品标题" align="center" prop="title" width="700px">
+        <template v-slot="scope">
+          <el-link :href="scope.row.url" target="_blank">{{ scope.row.title }}</el-link>
+        </template>
+      </el-table-column>
+      <el-table-column label="创建时间" align="center" prop="createTime" width="200px">
         <template v-slot="scope">
           <span>{{ parseTime(scope.row.createTime) }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="url" align="center" prop="url" />
       <el-table-column label="价格" align="center" prop="price" />
-      <el-table-column label="分类一" align="center" prop="mainCategory1" />
-      <el-table-column label="分类二" align="center" prop="mainCategory2" />
-      <el-table-column label="分类三" align="center" prop="mainCategory3" />
-      <el-table-column label="数据地址" align="center" prop="dataJson" />
-      <el-table-column label="productId" align="center" prop="productId" />
       <el-table-column label="快递费" align="center" prop="delivery" />
-      <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
-        <template v-slot="scope">
-          <el-button size="mini" type="text" icon="el-icon-edit" @click="openForm(scope.row.id)"
-                     v-hasPermi="['wuyou:basic-data:update']">修改</el-button>
-          <el-button size="mini" type="text" icon="el-icon-delete" @click="handleDelete(scope.row)"
-                     v-hasPermi="['wuyou:basic-data:delete']">删除</el-button>
-        </template>
-      </el-table-column>
+      <el-table-column label="分类一" align="center" prop="mainCategory1" width="150px"/>
+      <el-table-column label="分类二" align="center" prop="mainCategory2" width="150px"/>
+      <el-table-column label="分类三" align="center" prop="mainCategory3" width="150px"/>
     </el-table>
 
     <!-- 分页组件 -->
