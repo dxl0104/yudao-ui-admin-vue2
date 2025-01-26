@@ -53,20 +53,20 @@
       <el-table-column label="商品主图" align="center">
         <template v-slot="scope">
           <el-popover placement="right" trigger="hover">
-            <img :src="scope.row.mainUrl" style="width:200px;height:350px;"/>
+            <img :src="scope.row.mainUrl" style="width:350px;height:350px;"/>
             <img slot="reference" :src="scope.row.mainUrl"  style="max-width: 50px;max-height: 100px">
           </el-popover>
 
         </template>
       </el-table-column>
-      <el-table-column label="商品标题" align="left" prop="title" width="700">
+      <el-table-column label="商品标题" align="left" prop="title" width="600">
         <template v-slot="scope">
           <el-link :href="scope.row.url" target="_blank">{{ scope.row.title }}</el-link>
         </template>
       </el-table-column>
-      <el-table-column label="分类一" align="left" prop="mainCategory1" min-width="60"/>
-      <el-table-column label="分类二" align="left" prop="mainCategory2" min-width="100"/>
-      <el-table-column label="分类三" align="left" prop="mainCategory3" min-width="100"/>
+      <el-table-column label="分类一" align="left" prop="mainCategory1" min-width="150"/>
+      <el-table-column label="分类二" align="left" prop="mainCategory2" min-width="150"/>
+      <el-table-column label="分类三" align="left" prop="mainCategory3" min-width="150"/>
       <el-table-column label="价格" align="left" prop="price" />
       <el-table-column label="快递费" align="left" prop="delivery" />
       <el-table-column label="创建时间" align="left" prop="createTime">

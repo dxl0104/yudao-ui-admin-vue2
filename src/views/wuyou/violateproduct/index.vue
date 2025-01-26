@@ -6,27 +6,6 @@
         <el-date-picker v-model="queryParams.createTime" style="width: 240px" value-format="yyyy-MM-dd HH:mm:ss" type="daterange"
                         range-separator="-" start-placeholder="开始日期" end-placeholder="结束日期" :default-time="['00:00:00', '23:59:59']" />
       </el-form-item>
-      <el-form-item label="url商品链接" prop="url">
-        <el-input v-model="queryParams.url" placeholder="请输入url商品链接" clearable @keyup.enter.native="handleQuery"/>
-      </el-form-item>
-      <el-form-item label="快递费" prop="delivery">
-        <el-input v-model="queryParams.delivery" placeholder="请输入快递费" clearable @keyup.enter.native="handleQuery"/>
-      </el-form-item>
-      <el-form-item label="标题" prop="title">
-        <el-input v-model="queryParams.title" placeholder="请输入标题" clearable @keyup.enter.native="handleQuery"/>
-      </el-form-item>
-      <el-form-item label="productId" prop="productId">
-        <el-input v-model="queryParams.productId" placeholder="请输入productId" clearable @keyup.enter.native="handleQuery"/>
-      </el-form-item>
-      <el-form-item label="quantity" prop="quantity">
-        <el-input v-model="queryParams.quantity" placeholder="请输入quantity" clearable @keyup.enter.native="handleQuery"/>
-      </el-form-item>
-      <el-form-item label="price" prop="price">
-        <el-input v-model="queryParams.price" placeholder="请输入price" clearable @keyup.enter.native="handleQuery"/>
-      </el-form-item>
-      <el-form-item label="currency" prop="currency">
-        <el-input v-model="queryParams.currency" placeholder="请输入currency" clearable @keyup.enter.native="handleQuery"/>
-      </el-form-item>
       <el-form-item label="一级分类" prop="mainCategory1">
         <el-input v-model="queryParams.mainCategory1" placeholder="请输入一级分类" clearable @keyup.enter.native="handleQuery"/>
       </el-form-item>
@@ -35,9 +14,6 @@
       </el-form-item>
       <el-form-item label="三级分类" prop="mainCategory3">
         <el-input v-model="queryParams.mainCategory3" placeholder="请输入三级分类" clearable @keyup.enter.native="handleQuery"/>
-      </el-form-item>
-      <el-form-item label="商品主图" prop="mainUrl">
-        <el-input v-model="queryParams.mainUrl" placeholder="请输入商品主图" clearable @keyup.enter.native="handleQuery"/>
       </el-form-item>
       <el-form-item label="侵权词" prop="violateWord">
         <el-input v-model="queryParams.violateWord" placeholder="请输入侵权词" clearable @keyup.enter.native="handleQuery"/>
@@ -62,26 +38,31 @@
     </el-row>
 
             <el-table v-loading="loading" :data="list" :stripe="true" :show-overflow-tooltip="true">
-            <el-table-column label="id" align="center" prop="id" />
-      <el-table-column label="创建时间" align="center" prop="createTime" width="180">
-        <template v-slot="scope">
-          <span>{{ parseTime(scope.row.createTime) }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column label="快递费" align="center" prop="delivery" />
-      <el-table-column label="offerId" align="center" prop="offerId" />
-      <el-table-column label="ean" align="center" prop="ean" />
-      <el-table-column label="标题" align="center" prop="title" />
-      <el-table-column label="productId" align="center" prop="productId" />
-      <el-table-column label="quantity" align="center" prop="quantity" />
-      <el-table-column label="price" align="center" prop="price" />
-      <el-table-column label="currency" align="center" prop="currency" />
-      <el-table-column label="一级分类" align="center" prop="mainCategory1" />
-      <el-table-column label="二级分类" align="center" prop="mainCategory2" />
-      <el-table-column label="三级分类" align="center" prop="mainCategory3" />
-      <el-table-column label="imgUrl" align="center" prop="imgUrl" />
-      <el-table-column label="json" align="center" prop="offerDescription" />
-      <el-table-column label="商品主图" align="center" prop="mainUrl" />
+              <el-table-column label="id" align="center" prop="id" width="100"/>
+              <el-table-column label="商品主图" align="center">
+                <template v-slot="scope">
+                  <el-popover placement="right" trigger="hover">
+                    <img :src="scope.row.mainUrl" style="width:350px;height:350px;"/>
+                    <img slot="reference" :src="scope.row.mainUrl"  style="max-width: 50px;max-height: 100px">
+                  </el-popover>
+
+                </template>
+              </el-table-column>
+              <el-table-column label="商品标题" align="left" prop="title" width="600">
+                <template v-slot="scope">
+                  <el-link :href="scope.row.url" target="_blank">{{ scope.row.title }}</el-link>
+                </template>
+              </el-table-column>
+              <el-table-column label="分类一" align="left" prop="mainCategory1" min-width="150"/>
+              <el-table-column label="分类二" align="left" prop="mainCategory2" min-width="150"/>
+              <el-table-column label="分类三" align="left" prop="mainCategory3" min-width="150"/>
+              <el-table-column label="价格" align="left" prop="price" />
+              <el-table-column label="快递费" align="left" prop="delivery" />
+              <el-table-column label="创建时间" align="left" prop="createTime">
+                <template v-slot="scope">
+                  <span>{{ parseTime(scope.row.createTime) }}</span>
+                </template>
+              </el-table-column>
       <el-table-column label="侵权词" align="center" prop="violateWord" />
       <el-table-column label="侵权词id" align="center" prop="violateId" />
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
