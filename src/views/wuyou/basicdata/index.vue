@@ -49,31 +49,31 @@
       <el-table-column type="selection" width="55"  />
 
       <!-- 其他表格列 -->
-      <el-table-column label="id" align="center" prop="id" width="100px"/>
+      <el-table-column label="id" align="center" prop="id" width="100"/>
       <el-table-column label="商品主图" align="center">
         <template v-slot="scope">
-          <el-image
-            style="width: 100px; height: 60px"
-            :src="scope.row.mainUrl"
-            :preview-src-list="[scope.row.mainUrl]">
-          </el-image>
+          <el-popover placement="right" trigger="hover">
+            <img :src="scope.row.mainUrl" style="width:200px;height:350px;"/>
+            <img slot="reference" :src="scope.row.mainUrl"  style="max-width: 50px;max-height: 100px">
+          </el-popover>
+
         </template>
       </el-table-column>
-      <el-table-column label="商品标题" align="center" prop="title" width="700px">
+      <el-table-column label="商品标题" align="left" prop="title" width="700">
         <template v-slot="scope">
           <el-link :href="scope.row.url" target="_blank">{{ scope.row.title }}</el-link>
         </template>
       </el-table-column>
-      <el-table-column label="创建时间" align="center" prop="createTime" width="200px">
+      <el-table-column label="分类一" align="left" prop="mainCategory1" min-width="60"/>
+      <el-table-column label="分类二" align="left" prop="mainCategory2" min-width="100"/>
+      <el-table-column label="分类三" align="left" prop="mainCategory3" min-width="100"/>
+      <el-table-column label="价格" align="left" prop="price" />
+      <el-table-column label="快递费" align="left" prop="delivery" />
+      <el-table-column label="创建时间" align="left" prop="createTime">
         <template v-slot="scope">
           <span>{{ parseTime(scope.row.createTime) }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="价格" align="center" prop="price" />
-      <el-table-column label="快递费" align="center" prop="delivery" />
-      <el-table-column label="分类一" align="center" prop="mainCategory1" width="150px"/>
-      <el-table-column label="分类二" align="center" prop="mainCategory2" width="150px"/>
-      <el-table-column label="分类三" align="center" prop="mainCategory3" width="150px"/>
     </el-table>
 
     <!-- 分页组件 -->
@@ -130,6 +130,9 @@ export default {
       },
       // 选中的行（多选）
       selectedRows: [],
+      previewSrc: null,  // 当前放大图的地址
+      show: false,
+      imagePosition: { top: 0, left: 0 }  // 放大图的位置
     };
   },
   created() {
@@ -147,6 +150,36 @@ export default {
         this.loading = false;
       }
     },
+    showPreview(src, event) {
+      this.previewSrc = src; // 设置放大图源
+      this.show = true; // 显示放大图
+
+      // 计算图片的位置
+      const imgElement = event.target;  // 获取触发事件的图片元素
+      const rect = imgElement.getBoundingClientRect();
+
+      // 先设置放大图的临时位置（这时DOM已经更新）
+      this.imagePosition = {
+        top: rect.top + window.scrollY,  // 页面顶部距离
+        left: rect.right + window.scrollX + 10  // 图片右侧加上10px的间隙
+      };
+
+      // 使用 $nextTick 确保在 DOM 更新后执行位置调整
+      this.$nextTick(() => {
+        // 这里可以添加更多逻辑，比如调整位置或者执行动画
+        console.log('放大图已重新渲染！');
+
+        // 如果需要再次调整位置（如可能的界面变化），可以在这里操作
+        // 例如：手动设置放大图的位置
+        // this.imagePosition.top = ...
+        // this.imagePosition.left = ...
+      });
+    },
+    // 隐藏放大图
+    hidePreview() {
+      this.show = false; // 隐藏放大图
+    },
+
     /** 搜索按钮操作 */
     handleQuery() {
       this.queryParams.pageNo = 1;
@@ -222,5 +255,36 @@ export default {
 </script>
 
 <style scoped>
+.product-image {
+  width: 100px;
+  height: 60px;
+  transition: transform 0.3s ease;
+}
 
+.image-container {
+  display: inline-block;
+  position: relative;
+}
+
+.image-preview {
+  position: absolute;
+  width: 300px;
+  height: 300px;
+  background-color: rgba(0, 0, 0, 0.7);
+  border-radius: 8px;
+  overflow: hidden;
+  z-index: 9999;  /* 确保放大图在最上层 */
+  display: block; /* 显示图片 */
+}
+
+.image-preview img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.product-image:hover {
+  transform: scale(1.2);
+  z-index: 10;
+}
 </style>
