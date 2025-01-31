@@ -12,6 +12,9 @@
                     <el-form-item label="归档级别" prop="level">
                       <el-input v-model="formData.level" placeholder="请输入归档级别" />
                     </el-form-item>
+                    <el-form-item label="物流价格" prop="deliveryMoney">
+                      <el-input v-model="formData.deliveryMoney" placeholder="请输入物流价格" />
+                    </el-form-item>
       </el-form>
               <div slot="footer" class="dialog-footer">
         <el-button type="primary" @click="submitForm" :disabled="formLoading">确 定</el-button>
@@ -41,6 +44,7 @@
                             startMoney: undefined,
                             endMoney: undefined,
                             level: undefined,
+                            deliveryMoney: undefined,
         },
         // 表单校验
         formRules: {
@@ -96,6 +100,7 @@
                             startMoney: undefined,
                             endMoney: undefined,
                             level: undefined,
+                            deliveryMoney: undefined,
         };
         this.resetForm("formRef");
       }

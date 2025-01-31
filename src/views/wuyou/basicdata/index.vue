@@ -15,6 +15,15 @@
         <el-input v-model="queryParams.delivery" placeholder="请输入快递费" clearable
                   @keyup.enter.native="handleQuery"/>
       </el-form-item>
+      <el-form-item>
+        <el-cascader
+          :value="queryParams.treeCategory"
+          :options="treeList"
+          :props="treeProps"
+          @change="categoryChange"
+          filterable></el-cascader>
+      </el-form-item>
+
       <el-form-item label="productId" prop="productId">
         <el-input v-model="queryParams.productId" placeholder="请输入productId" clearable
                   @keyup.enter.native="handleQuery"/>
@@ -112,6 +121,7 @@
 
 <script>
 import * as BasicDataApi from '@/api/wuyou/basicdata';
+import * as CategoryApi from '@/api/wuyou/category';
 import BasicDataForm from './BasicDataForm.vue';
 import {importId} from "@/api/wuyou/basicdata";
 
@@ -124,6 +134,7 @@ export default {
     return {
       // 遮罩层
       loading: true,
+      treeLoding:true,
       // 导出遮罩层
       exportLoading: false,
       exportAllLoading: false,
@@ -140,6 +151,11 @@ export default {
       refreshTable: true,
       // 选中行
       currentRow: {},
+      treeList:[],
+      treeProps:{
+        label:"zhName",
+        value:"categoryName"
+      },
       // 查询参数
       queryParams: {
         pageNo: 1,
@@ -155,7 +171,8 @@ export default {
         mainCategory3: null,
         productId: null,
         type: 'all',
-        multiple: "0.98"
+        multiple: "0.98",
+        treeCategory:undefined,
       },
       // 选中的行（多选）
       selectedRows: [],
@@ -168,6 +185,7 @@ export default {
   },
   created() {
     this.getList();
+    this.getTree();
   },
   methods: {
     /** 查询列表 */
@@ -180,6 +198,23 @@ export default {
       } finally {
         this.loading = false;
       }
+    },
+    /** 查询列表 */
+    async getTree() {
+      try {
+        this.treeLoding = true;
+        const res = await CategoryApi.getCategoryList(this.queryParams);
+        this.treeList = this.handleTree(res.data, 'id', 'parentId','children',0);
+      } finally {
+        this.treeLoding = false;
+      }
+    },
+    categoryChange(node){
+      console.log(node)
+      this.queryParams.mainCategory1=node[0]
+      this.queryParams.mainCategory2=node[1]
+      this.queryParams.mainCategory3=node[2]
+      console.log(this.queryParams)
     },
     /** 搜索按钮操作 */
     handleQuery() {

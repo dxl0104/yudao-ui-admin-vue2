@@ -15,6 +15,9 @@
         <el-date-picker v-model="queryParams.createTime" style="width: 240px" value-format="yyyy-MM-dd HH:mm:ss" type="daterange"
                         range-separator="-" start-placeholder="开始日期" end-placeholder="结束日期" :default-time="['00:00:00', '23:59:59']" />
       </el-form-item>
+      <el-form-item label="物流价格" prop="deliveryMoney">
+        <el-input v-model="queryParams.deliveryMoney" placeholder="请输入物流价格" clearable @keyup.enter.native="handleQuery"/>
+      </el-form-item>
       <el-form-item>
         <el-button type="primary" icon="el-icon-search" @click="handleQuery">搜索</el-button>
         <el-button icon="el-icon-refresh" @click="resetQuery">重置</el-button>
@@ -44,6 +47,7 @@
           <span>{{ parseTime(scope.row.createTime) }}</span>
         </template>
       </el-table-column>
+      <el-table-column label="物流价格" align="center" prop="deliveryMoney" />
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
         <template v-slot="scope">
           <el-button size="mini" type="text" icon="el-icon-edit" @click="openForm(scope.row.id)"
@@ -95,6 +99,7 @@ export default {
         endMoney: null,
         level: null,
         createTime: [],
+        deliveryMoney: null,
       },
             };
   },
@@ -151,4 +156,4 @@ export default {
     },
               }
 };
-</script>
+</script>
