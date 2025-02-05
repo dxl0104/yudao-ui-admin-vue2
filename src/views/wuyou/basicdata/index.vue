@@ -81,14 +81,17 @@
 
         </template>
       </el-table-column>
-      <el-table-column label="商品标题" align="left" prop="title" width="600">
+      <el-table-column label="商品标题" align="left" prop="title" width="500">
         <template v-slot="scope">
           <el-link :href="scope.row.url" target="_blank">{{ scope.row.title }}</el-link>
         </template>
       </el-table-column>
-      <el-table-column label="分类一" align="left" prop="mainCategory1" min-width="150"/>
-      <el-table-column label="分类二" align="left" prop="mainCategory2" min-width="150"/>
-      <el-table-column label="分类三" align="left" prop="mainCategory3" min-width="150"/>
+      <el-table-column label="跟卖" align="left" prop="offersTotalCount" min-width="60"/>
+      <el-table-column label="已售" align="left" prop="buyersQuantity" min-width="60"/>
+      <el-table-column label="评分" align="left" prop="score" min-width="60"/>
+      <el-table-column label="分类一" align="left" prop="mainCategory1" min-width="120"/>
+      <el-table-column label="分类二" align="left" prop="mainCategory2" min-width="120"/>
+      <el-table-column label="分类三" align="left" prop="mainCategory3" min-width="120"/>
       <el-table-column label="价格" align="left" prop="price"/>
       <el-table-column label="快递费" align="left" prop="delivery"/>
       <el-table-column label="创建时间" align="left" prop="createTime">
